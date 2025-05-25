@@ -1,6 +1,6 @@
 <?php
 
-namespace HotelReviews\Services;
+namespace HotelReviews\Http\Services;
 
 use HotelReviews\Models\UserWallet;
 use Illuminate\Support\Facades\Auth;
