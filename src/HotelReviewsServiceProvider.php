@@ -1,10 +1,10 @@
 <?php
 
-namespace HotelReview;
+namespace HotelReviews;
 
 use Illuminate\Support\ServiceProvider;
 
-class HotelReviewServiceProvider extends ServiceProvider
+class HotelReviewsServiceProvider extends ServiceProvider
 {
     public function boot()
     {
