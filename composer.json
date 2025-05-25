@@ -13,7 +13,8 @@
         "ext-json": "*",
         "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
         "kornrunner/keccak": "^1.1",
-        "bitwasp/secp256k1-php": "^0.2.0"
+        "bitwasp/secp256k1-php": "^0.2.0",
+        "simplito/elliptic-php": "^1.0"
     },
     "extra": {
         "laravel": {
