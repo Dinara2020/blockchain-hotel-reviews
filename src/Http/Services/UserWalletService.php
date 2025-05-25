@@ -5,8 +5,8 @@ namespace HotelReviews\Http\Services;
 use HotelReviews\Models\UserWallet;
 use Illuminate\Support\Facades\Auth;
 use kornrunner\Keccak;
-use BitWasp\Bitcoin\Crypto\Random\Random;
-use Mdanter\Ecc\EccFactory;
+use BitWasp\Secp256k1\Secp256k1;
+use BitWasp\Buffertools\Buffer;
 
 class UserWalletService
 {
@@ -17,19 +17,20 @@ class UserWalletService
             return $wallet;
         }
 
-        $random = new Random();
-        $privateKeyHex = bin2hex($random->bytes(32));
+        // 1. Сгенерировать 32-байтовый приватный ключ
+        $privateKeyBytes = random_bytes(32);
+        $privateKeyHex = bin2hex($privateKeyBytes);
 
-        $adapter = EccFactory::getAdapter();
-        $generator = EccFactory::getSecgCurves()->generator256k1();
-        $privateKey = $generator->createPrivateKey(gmp_init($privateKeyHex, 16));
-        $publicKey = $privateKey->getPublicKey();
+        // 2. Создать публичный ключ (несжатый)
+        $secp256k1 = new Secp256k1();
+        $context = $secp256k1->context();
+        $privateKey = $context->secretKeyCreate($privateKeyBytes);
+        $publicKey = $context->pubkeyCreate($privateKey);
+        $serializedPubKey = $context->pubkeySerialize($publicKey, false); // false = uncompressed
 
-        $x = str_pad(gmp_strval($publicKey->getX(), 16), 64, '0', STR_PAD_LEFT);
-        $y = str_pad(gmp_strval($publicKey->getY(), 16), 64, '0', STR_PAD_LEFT);
-        $uncompressedPublicKey = hex2bin('04' . $x . $y);
-
-        $address = '0x' . substr(Keccak::hash($uncompressedPublicKey, 256), 24);
+        // 3. Удалить префикс 0x04 и хешировать оставшиеся 64 байта
+        $pubKeyBody = substr($serializedPubKey, 1); // пропускаем первый байт (0x04)
+        $address = '0x' . substr(Keccak::hash($pubKeyBody, 256), 24);
 
         return UserWallet::create([
             'user_id' => $user->id,
