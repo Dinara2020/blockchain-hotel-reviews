@@ -5,7 +5,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "HotelReview\\": "src/"
+            "HotelReviews\\": "src/"
         }
     },
     "require": {
@@ -17,7 +17,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "HotelReview\\HotelReviewServiceProvider"
+                "HotelReviews\\HotelReviewServiceProvider"
             ]
         }
     }
