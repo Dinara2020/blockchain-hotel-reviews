@@ -3,8 +3,8 @@
 namespace HotelReview\Http\Controllers;
 
 use Illuminate\Http\Request;
-use HotelReview\Services\SignatureVerifier;
-use HotelReview\Services\PolygonRelayer;
+use HotelReviews\Http\Services\SignatureVerifier;
+use HotelReviews\Http\Services\PolygonRelayer;
 
 class ReviewController
 {

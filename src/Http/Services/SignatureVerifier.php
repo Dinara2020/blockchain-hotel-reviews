@@ -1,6 +1,6 @@
 <?php
 
-namespace HotelReview\Services;
+namespace HotelReviews\Http\Services;
 
 use kornrunner\Keccak;
 
